@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class ArrayCRUD {
 
-    // CRUD - Create, Read, Update, Delete
+    // CRUD  - Create, Read, Update, Delete
     static int[] arr;
 
     static void createArray(Scanner sc) {
