@@ -17,7 +17,7 @@ public class OTPService {
 		OTPService.sendRegisterOTP("piebytwo014@gmail.com", "Vivek Kumar", 567589);
 	}
 	
-	static void sendRegisterOTP(String to, String userName, int OTP) {
+	public static void sendRegisterOTP(String to, String userName, int OTP) {
 		String senderEmail = "piebytwo014@gmail.com";
 		String senderPassword = "pdjltlgwryqhcxdc";
 		

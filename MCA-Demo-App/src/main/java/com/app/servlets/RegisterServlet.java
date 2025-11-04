@@ -7,18 +7,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class RegisterServlet
  */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/RegisterServlet")
+public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public RegisterServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,17 +26,11 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String firstName = request.getParameter("fName_k");
+		String lastName = request.getParameter("lName_k");
+		String mobileNum = request.getParameter("mob_k");
 		String email = request.getParameter("email_k");
 		String password = request.getParameter("password_k");
-
-		System.out.println("Your email add is :"+email);
-		System.out.println("Your password is :"+password);
-		if(email.equals("admin@rdec.in") && password.equals("123456")) {
-			response.sendRedirect("home.html");
-		}else {
-			System.out.println("Your email or password is incorrect");
-		}
-		System.out.println("YES");
 	}
 
 	/**
