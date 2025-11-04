@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import com.app.database.DatabaseConnection;
+
 /**
  * Servlet implementation class LoginServlet
  */
@@ -28,7 +30,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email_k");
 		String password = request.getParameter("password_k");
-		
+		DatabaseConnection.insertUserData(password, password, password, email, password)
 		System.out.println("Your email add is :"+email);
 		System.out.println("Your password is :"+password);
 		if(email.equals("admin@rdec.in") && password.equals("123456")) {
