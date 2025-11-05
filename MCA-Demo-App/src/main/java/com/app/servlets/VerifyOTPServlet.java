@@ -9,19 +9,17 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import com.app.services.OTPService;
-
 /**
- * Servlet implementation class RegisterServlet
+ * Servlet implementation class VerifyOTPServlet
  */
-@WebServlet("/RegisterServlet")
-public class RegisterServlet extends HttpServlet {
+@WebServlet("/VerifyOTPServlet")
+public class VerifyOTPServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RegisterServlet() {
+    public VerifyOTPServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,22 +28,14 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String firstName = request.getParameter("fName_k");
-		String lastName = request.getParameter("lName_k");
-		String mobileNum = request.getParameter("mob_k");
-		String email = request.getParameter("email_k");
-		String password = request.getParameter("password_k");
+		String userOTP = request.getParameter("userOTP");
+		HttpSession session = request.getSession(false);
+		int sentOTP = (int)(session.getAttribute("sentOTP"));
 		
-		int OTP = (int)((Math.random() * 900000) + 100000);
-		
-		boolean OTPSentStatus = OTPService.sendRegisterOTP(email, firstName + " " + lastName, OTP);
-		
-		if(OTPSentStatus) {
-			HttpSession session = request.getSession(); // this creates a new session
-			session.setAttribute("sentOTP", OTP);
-			response.sendRedirect("verifyOTP.html");
+		if(Integer.parseInt(userOTP) == sentOTP) {
+			System.out.println("OTP VERIFICATION SUCCESS");
 		}else {
-			System.out.println("OTP SENT FAILED");
+			System.out.println("OTP VERIFICATION FAILED");
 		}
 	}
 

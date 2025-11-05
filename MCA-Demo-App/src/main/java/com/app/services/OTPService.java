@@ -13,13 +13,9 @@ import jakarta.mail.internet.MimeMessage;
 
 public class OTPService {
 	
-	public static void main(String a []) {
-		OTPService.sendRegisterOTP("piebytwo014@gmail.com", "Vivek Kumar", 567589);
-	}
-	
-	public static void sendRegisterOTP(String to, String userName, int OTP) {
-		String senderEmail = "piebytwo014@gmail.com";
-		String senderPassword = "pdjltlgwryqhcxdc";
+	public static boolean sendRegisterOTP(String to, String userName, int OTP) {
+		String senderEmail = "";
+		String senderPassword = "";
 		
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -50,10 +46,10 @@ public class OTPService {
 						+"Thanks and Regards, \n"
 						+"Team MCA.");
 			Transport.send(msg);
-			System.out.println("Email sent success");
+			return true;
 		} catch (MessagingException e) {
 			e.printStackTrace();
-			System.out.println("Email sent failed");
+			return false;
 		}
 	}
 }
