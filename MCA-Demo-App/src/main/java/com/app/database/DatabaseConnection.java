@@ -13,37 +13,37 @@ import com.mongodb.client.MongoDatabase;
 import shadow.org.bson.Document;
 
 public class DatabaseConnection {
-	public static void insertUserData(String fName, String lName, String mobile, String email, String password) {
-		
-		
+	 static String connectionString = "mongodb+srv://testhub153:testhub153@cluster0.wwc2tlu.mongodb.net/?appName=Cluster0";
+
+     static ServerApi serverApi = ServerApi.builder()
+             .version(ServerApiVersion.V1)
+             .build();
+
+     static MongoClientSettings settings = MongoClientSettings.builder()
+             .applyConnectionString(new ConnectionString(connectionString))
+             .serverApi(serverApi)
+             .build();
+     // Create a new client and connect to the server
+     static MongoClient mongoClient = MongoClients.create(settings);
+       
+     static MongoDatabase database = mongoClient.getDatabase("rdec_mca");
+     static MongoCollection<Document> c = database.getCollection("users");
+    
+         
+	
+	public static boolean insertUserData(String firstName, String lastName, long phone, String userMail, String userPwd) {
+		try {
+			c.insertOne(new Document("firstName", firstName)
+	 				.append("lastName", lastName)
+	 				.append("mobileNum", phone)
+	 				.append("userEmail", userMail)
+	 				.append("userPassword", userPwd)
+	 				.append("isVerified", false));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		 
 	}
-    public static void main(String[] args) {
-        String connectionString = "mongodb+srv://piebytwo014:piebytwo014@cluster0.owltxjt.mongodb.net/?appName=Cluster0";
-
-        ServerApi serverApi = ServerApi.builder()
-                .version(ServerApiVersion.V1)
-                .build();
-
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(connectionString))
-                .serverApi(serverApi)
-                .build();
-
-        // Create a new client and connect to the server
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
-            try {
-                // Send a ping to confirm a successful connection
-                MongoDatabase database = mongoClient.getDatabase("secf");
-                MongoCollection<Document> coll = database.getCollection("users");
-                coll.insertOne(new Document("firstName", "Harsh")
-                						.append("lastName", "Tyagi")
-                						.append("mobileNum", "123456")
-                						.append("userEmail", "harsh@rdec.in")
-                						.append("userPassword", "harsh@123"));
-                System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
-            } catch (MongoException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	
 }
