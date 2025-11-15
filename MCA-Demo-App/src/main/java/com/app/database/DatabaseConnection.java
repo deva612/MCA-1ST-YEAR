@@ -32,7 +32,18 @@ public class DatabaseConnection {
      static MongoDatabase database = mongoClient.getDatabase("rdec_mca");
      static MongoCollection<Document> c = database.getCollection("users");
     
-         
+      
+     
+     public static void verifyUser(String email) {
+    	 // search user by email add
+    	 Document userToBeSearched = new Document("userEmail", email);
+    	 Document found =  c.find(userToBeSearched).first();
+    	 if(found == null) {
+    		 System.out.println("No user found to be verified");
+    	 }
+    	 Document updatedUser = new Document("$set", new Document("isVerified", true));
+    	 c.findOneAndUpdate(found, updatedUser);
+     }
 	
 	public static boolean insertUserData(String firstName, String lastName, long phone, String userMail, String userPwd) {
 		try {

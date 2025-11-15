@@ -37,16 +37,23 @@ public class RegisterServlet extends HttpServlet {
 		String email = request.getParameter("email_k");
 		String password = request.getParameter("password_k");
 		
-		
+		//here we are calling insertUserData fn in order to save user data in the mongo db.
+		//if everything is okay the fn says true otherwise the response is false
 		boolean dataSaveStatus = DatabaseConnection.insertUserData(firstName, lastName,Long.parseLong(mobileNum) , email, password);
+		
 		if(dataSaveStatus) {
+			//here we are creating a 6 digit OTP.
 			int OTP = (int)((Math.random() * 900000) + 100000);
-			
+			// here we are calling a fn named sendRegisterOTP which sends an OTP on the user email
+			//if everything is okay, the fn says true, otherwise the fn says false;
+			// if true --> OTP gaya
+			// if false --> OTP nhi gaya
 			boolean OTPSentStatus = OTPService.sendRegisterOTP(email, firstName + " " + lastName, OTP);
 			
 			if(OTPSentStatus) {
 				HttpSession session = request.getSession(); // this creates a new session
 				session.setAttribute("sentOTP", OTP);
+				session.setAttribute("email", email);
 				response.sendRedirect("verifyOTP.html");
 			}else {
 				System.out.println("OTP SENT FAILED");
