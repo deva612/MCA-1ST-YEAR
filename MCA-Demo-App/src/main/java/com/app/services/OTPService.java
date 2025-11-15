@@ -2,6 +2,8 @@ package com.app.services;
 
 import java.util.Properties;
 
+import com.app.config.AppConfig;
+
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -15,7 +17,7 @@ public class OTPService {
 	
 	public static boolean sendRegisterOTP(String to, String userName, int OTP) {
 		String senderEmail = "piebytwo014@gmail.com";
-		String senderPassword = "zvwhwavugetyxeho";
+		String senderPassword = AppConfig.getSecretData("EMAIL_PASSWORD");
 		
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com");

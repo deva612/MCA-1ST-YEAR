@@ -1,6 +1,7 @@
 package com.app.database;
 
 
+import com.app.config.AppConfig;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
@@ -13,7 +14,9 @@ import com.mongodb.client.MongoDatabase;
 import shadow.org.bson.Document;
 
 public class DatabaseConnection {
-	 static String connectionString = "mongodb+srv://testhub153:testhub153@cluster0.wwc2tlu.mongodb.net/?appName=Cluster0";
+	static String userName =  AppConfig.getSecretData("MONGO_DB_USERNAME");
+	static String dbPassword =  AppConfig.getSecretData("MONGO_DB_PASSWORD");
+	 static String connectionString = "mongodb+srv://"+userName+":"+dbPassword+"@cluster0.wwc2tlu.mongodb.net/?appName=Cluster0";
 
      static ServerApi serverApi = ServerApi.builder()
              .version(ServerApiVersion.V1)
