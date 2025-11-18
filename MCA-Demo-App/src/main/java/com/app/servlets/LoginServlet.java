@@ -1,11 +1,15 @@
 package com.app.servlets;
 
+import java.io.IOException;
+
+import com.app.database.DatabaseConnection;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import shadow.org.bson.Document;
 
 
 /**
@@ -30,14 +34,24 @@ public class LoginServlet extends HttpServlet {
 		String email = request.getParameter("email_k");
 		String password = request.getParameter("password_k");
 
-		System.out.println("Your email add is :"+email);
-		System.out.println("Your password is :"+password);
-		if(email.equals("admin@rdec.in") && password.equals("123456")) {
-			response.sendRedirect("home.html");
-		}else {
-			System.out.println("Your email or password is incorrect");
+		
+		Document loginUser=  DatabaseConnection.loginUser(email);
+		
+		if(loginUser != null) {
+			if(email.equals(loginUser.getString("userEmail")) && password.equals(loginUser.getString("userPassword")) && (loginUser.getBoolean("isVerified")== true)) {
+				response.sendRedirect("home.html");
+			}else if(email.equals(loginUser.getString("userEmail")) && password.equals(loginUser.getString("userPassword")) && (loginUser.getBoolean("isVerified")== false)) {
+				System.out.println("Account not verified");
+			}
+			else {
+				System.out.println("Your password is incorrect");
+			}
+			System.out.println("YES");
 		}
-		System.out.println("YES");
+		
+		
+		
+		
 	}
 
 	/**

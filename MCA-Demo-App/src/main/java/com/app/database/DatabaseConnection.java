@@ -34,6 +34,16 @@ public class DatabaseConnection {
     
       
      
+     public static Document loginUser(String email) {
+    	 Document userToBeSearched = new Document("userEmail", email);
+    	 Document found =  c.find(userToBeSearched).first();
+    	 if(found == null) {
+    		 System.out.println("Account does not exist.");
+    		 return null;
+    	 }
+    	 return found;
+     }
+     
      public static void verifyUser(String email) {
     	 // search user by email add
     	 Document userToBeSearched = new Document("userEmail", email);
