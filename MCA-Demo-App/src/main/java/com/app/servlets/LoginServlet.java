@@ -46,12 +46,7 @@ public class LoginServlet extends HttpServlet {
 			else {
 				System.out.println("Your password is incorrect");
 			}
-			System.out.println("YES");
 		}
-		
-		
-		
-		
 	}
 
 	/**

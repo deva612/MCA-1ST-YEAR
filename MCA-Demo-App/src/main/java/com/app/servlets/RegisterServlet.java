@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import com.app.config.AppConfig;
 import com.app.database.DatabaseConnection;
 import com.app.services.OTPService;
 
@@ -60,6 +61,7 @@ public class RegisterServlet extends HttpServlet {
 			}
 		}else {
 			System.out.println("Data save failed");
+			System.out.println(AppConfig.ERROR_LOG("DATA SAVE FAILED"));
 		}
 		
 		
