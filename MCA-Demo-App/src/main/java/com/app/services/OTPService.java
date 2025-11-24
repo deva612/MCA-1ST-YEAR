@@ -15,7 +15,7 @@ import jakarta.mail.internet.MimeMessage;
 
 public class OTPService {
 	
-	public static boolean sendRegisterOTP(String to, String userName, int OTP) {
+	public static boolean sendRegisterOTP(String to, String userName, String token) {
 		String senderEmail = "piebytwo014@gmail.com";
 		String senderPassword = AppConfig.getSecretData("EMAIL_PASSWORD");
 		
@@ -37,16 +37,26 @@ public class OTPService {
 		
 		Message msg = new MimeMessage(session);
 		
+//					  "http://localhost:8080/MCA-Demo-App/VerifyOTPServlet"
+		String link = "http://localhost:8080/MCA-Demo-App/VerifyOTPServlet?token="+token;
+		
 		try {
 			msg.setFrom(new InternetAddress(senderEmail));
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			msg.setSubject("Registration Success 🙏");
+//			msg.setText("Hello, "+ userName + "\n\n"
+//						+"Your One Time Password (OTP) is : "+OTP+"\n\n"
+//						+"This OTP will expire in next 10 mins. \n\n"
+//						+"Please do not share this OTP with anyone. \n\n"
+//						+"Thanks and Regards, \n"
+//						+"Team MCA.");
 			msg.setText("Hello, "+ userName + "\n\n"
-						+"Your One Time Password (OTP) is : "+OTP+"\n\n"
-						+"This OTP will expire in next 10 mins. \n\n"
-						+"Please do not share this OTP with anyone. \n\n"
-						+"Thanks and Regards, \n"
-						+"Team MCA.");
+					+"Follow this link to verify for your "+to+" account.\n\n"
+					+"<a href="+link+">"+link+"</a>"
+					+"This Link will expire in next 10 mins. \n\n"
+					+"If you didn’t ask to verify your account, you can ignore this email. \n\n"
+					+"Thanks and Regards, \n"
+					+"Team MCA.");
 			Transport.send(msg);
 			return true;
 		} catch (MessagingException e) {

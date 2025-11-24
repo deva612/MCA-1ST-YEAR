@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 import com.app.database.DatabaseConnection;
+import com.app.util.JWTUtil;
 
 /**
  * Servlet implementation class VerifyOTPServlet
@@ -30,16 +31,18 @@ public class VerifyOTPServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userOTP = request.getParameter("userOTP");
-		HttpSession session = request.getSession(false);
-		int sentOTP = (int)(session.getAttribute("sentOTP"));
-		String email = (String)(session.getAttribute("email"));
-		
-		if(Integer.parseInt(userOTP) == sentOTP) {
-			DatabaseConnection.verifyUser(email);
-		}else {
-			System.out.println("OTP VERIFICATION FAILED");
-		}
+		String token = request.getParameter("token");
+		JWTUtil.verifyJWT(token);
+//		String userOTP = request.getParameter("userOTP");
+//		HttpSession session = request.getSession(false);
+//		int sentOTP = (int)(session.getAttribute("sentOTP"));
+//		String email = (String)(session.getAttribute("email"));
+//		
+//		if(Integer.parseInt(userOTP) == sentOTP) {
+//			DatabaseConnection.verifyUser(email);
+//		}else {
+//			System.out.println("OTP VERIFICATION FAILED");
+//		}
 	}
 
 	/**

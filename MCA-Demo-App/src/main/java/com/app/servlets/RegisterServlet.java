@@ -12,6 +12,7 @@ import java.io.IOException;
 import com.app.config.AppConfig;
 import com.app.database.DatabaseConnection;
 import com.app.services.OTPService;
+import com.app.util.JWTUtil;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -49,7 +50,9 @@ public class RegisterServlet extends HttpServlet {
 			//if everything is okay, the fn says true, otherwise the fn says false;
 			// if true --> OTP gaya
 			// if false --> OTP nhi gaya
-			boolean OTPSentStatus = OTPService.sendRegisterOTP(email, firstName + " " + lastName, OTP);
+			
+			String token = JWTUtil.createJWT(email, Integer.parseInt(mobileNum) , firstName + " " + lastName, OTP);
+			boolean OTPSentStatus = OTPService.sendRegisterOTP(email, firstName + " " + lastName, token);
 			
 			if(OTPSentStatus) {
 				HttpSession session = request.getSession(); // this creates a new session
