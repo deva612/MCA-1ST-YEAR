@@ -15,7 +15,7 @@ import jakarta.mail.internet.MimeMessage;
 
 public class OTPService {
 	
-	public static boolean sendRegisterOTP(String to, String userName, String token) {
+	public static boolean sendVerificationLink(String to, String userName, String token) {
 		String senderEmail = "piebytwo014@gmail.com";
 		String senderPassword = AppConfig.getSecretData("EMAIL_PASSWORD");
 		
@@ -52,7 +52,7 @@ public class OTPService {
 //						+"Team MCA.");
 			msg.setText("Hello, "+ userName + "\n\n"
 					+"Follow this link to verify for your "+to+" account.\n\n"
-					+"<a href="+link+">"+link+"</a>"
+					+"<a href="+">"+link+"</a>"
 					+"This Link will expire in next 10 mins. \n\n"
 					+"If you didn’t ask to verify your account, you can ignore this email. \n\n"
 					+"Thanks and Regards, \n"

@@ -32,17 +32,32 @@ public class VerifyOTPServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String token = request.getParameter("token");
-		JWTUtil.verifyJWT(token);
-//		String userOTP = request.getParameter("userOTP");
-//		HttpSession session = request.getSession(false);
-//		int sentOTP = (int)(session.getAttribute("sentOTP"));
-//		String email = (String)(session.getAttribute("email"));
-//		
-//		if(Integer.parseInt(userOTP) == sentOTP) {
-//			DatabaseConnection.verifyUser(email);
-//		}else {
-//			System.out.println("OTP VERIFICATION FAILED");
-//		}
+		
+		if(DatabaseConnection.checkTokenUseCount(token)) {
+			String email = JWTUtil.verifyJWT(token);
+			boolean verifyStatus = DatabaseConnection.verifyUser(email);
+			if(verifyStatus) {
+				System.out.println("VERIFICATION SUCCESS");
+			}
+			else {
+				System.out.println("VERIFICATION FAILED");
+			}
+			
+			//this line is used when we were sending otp on user mail, but we don't need this in case of link verification
+			
+//			String userOTP = request.getParameter("userOTP");
+			
+//			HttpSession session = request.getSession(false);
+//			System.out.println(session.getCreationTime());
+//			int sentOTP = (int)(session.getAttribute("sentOTP"));
+//			if(Integer.parseInt(tokenOTP) == sentOTP) {
+//				System.out.println("sdfsdfds");
+////				
+//			}else {
+//				System.out.println("OTP VERIFICATION FAILED");
+//			}
+		}
+	
 	}
 
 	/**

@@ -32,6 +32,14 @@ public class RegisterServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    
+    private static int instanceOTP;
+    
+    public static int getOTP() {
+    	return instanceOTP;
+    }
+    
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String firstName = request.getParameter("fName_k");
 		String lastName = request.getParameter("lName_k");
@@ -52,13 +60,18 @@ public class RegisterServlet extends HttpServlet {
 			// if false --> OTP nhi gaya
 			
 			String token = JWTUtil.createJWT(email, Integer.parseInt(mobileNum) , firstName + " " + lastName, OTP);
-			boolean OTPSentStatus = OTPService.sendRegisterOTP(email, firstName + " " + lastName, token);
+			DatabaseConnection.insertToken(token);
+			boolean OTPSentStatus = OTPService.sendVerificationLink(email, firstName + " " + lastName, token);
 			
 			if(OTPSentStatus) {
-				HttpSession session = request.getSession(); // this creates a new session
-				session.setAttribute("sentOTP", OTP);
-				session.setAttribute("email", email);
-				response.sendRedirect("verifyOTP.html");
+				
+				instanceOTP = OTP;
+//				HttpSession session = request.getSession(); // this creates a new session
+//			
+//				session.setAttribute("sentOTP", OTP);
+//				
+//				response.sendRedirect("verifyOTP.html");
+				response.sendRedirect("verificationLinkSentPage.html");				
 			}else {
 				System.out.println("OTP SENT FAILED");
 			}

@@ -31,8 +31,59 @@ public class DatabaseConnection {
        
      static MongoDatabase database = mongoClient.getDatabase("rdec_mca");
      static MongoCollection<Document> c = database.getCollection("users");
+     static MongoCollection<Document> c2 = database.getCollection("token");
     
       
+     public static boolean insertToken(String token) {
+    	 try {
+ 			c2.insertOne(new Document("token", token)
+ 	 				.append("useCount", "0"));
+ 			return true;
+ 		} catch (Exception e) {
+ 			return false;
+ 		}
+     }
+     
+     public static boolean checkTokenUseCount(String token) {
+    	 try {
+    		 Document tokenToBeSeached = new Document("token", token);
+        	 Document found =  c2.find(tokenToBeSeached).first();
+ 			if(Integer.parseInt(found.getString("useCount")) <= 0) {
+ 				return true;
+ 			}
+ 			return false;
+ 		} catch (Exception e) {
+ 			return false;
+ 		}
+     }
+     
+     
+     public static String updateTokenUseCount(String token) {
+    	 
+    	 System.out.println("adfsf");
+    	 // search token
+    	 Document userToBeSearched = new Document("token", token);
+    	 Document found =  c2.find(userToBeSearched).first();
+    	 if(found == null) {
+    		 System.out.println("No token found");
+    	 }
+    	 try {
+    		 int currentUseCount = Integer.parseInt(found.getString("useCount"));
+    		 currentUseCount = currentUseCount + 1;
+    		 String update = String.valueOf(currentUseCount);
+    		 Document updatedToken = new Document("$set", new Document("useCount", update));
+        	 c2.findOneAndUpdate(found, updatedToken);
+        	 System.out.println("doneeeeeeeeeee");
+
+        	 return "";
+		} catch (Exception e) {
+			System.out.println("eeeeeeeeeeeee");
+			return "";
+		}
+    	
+     }
+     
+     
      
      public static Document loginUser(String email) {
     	 Document userToBeSearched = new Document("userEmail", email);
@@ -44,15 +95,21 @@ public class DatabaseConnection {
     	 return found;
      }
      
-     public static void verifyUser(String email) {
+     public static boolean verifyUser(String email) {
     	 // search user by email add
     	 Document userToBeSearched = new Document("userEmail", email);
     	 Document found =  c.find(userToBeSearched).first();
     	 if(found == null) {
     		 System.out.println("No user found to be verified");
     	 }
-    	 Document updatedUser = new Document("$set", new Document("isVerified", true));
-    	 c.findOneAndUpdate(found, updatedUser);
+    	 try {
+    		 Document updatedUser = new Document("$set", new Document("isVerified", true));
+        	 c.findOneAndUpdate(found, updatedUser);
+        	 return true;
+		} catch (Exception e) {
+			return false;
+		}
+    	
      }
 	
 	public static boolean insertUserData(String firstName, String lastName, long phone, String userMail, String userPwd) {
